@@ -1,0 +1,26 @@
+@font-face{font-family:'Roxane Chalk Latin';src:url('assets/fonts/patrick-hand.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-002F,U+003A-10FFFF}
+/* Clear WenKai numerals also apply while editing saved text drafts. */
+/* The complete WenKai face keeps Chinese, Latin and numerals in one body typeface. */
+:root{--hand:'Roxane Draft Chinese',serif;--serif:var(--hand);--display-hand:'Roxane Chalk Latin','Roxane Draft Chinese',cursive}
+body,button{font-family:var(--hand);font-synthesis:none}
+.signature{font-family:'Roxane Chalk Chinese','KaiTi',cursive;font-size:66px;font-weight:400;letter-spacing:5px;margin-bottom:13px;transform:rotate(-2deg);line-height:1.2}
+.signature:before{content:none}
+.english-name{font-family:'Roxane Chalk Latin',cursive;color:var(--yellow);font-size:31px;font-weight:400;line-height:1.2;margin:0 0 29px;letter-spacing:1.5px;transform:none;width:max-content}
+.signature,.english-name,.hero-statement,.work-heading h2,footer h2{filter:url('#chalk-lettering')}
+.hero-statement{font-family:var(--display-hand);font-weight:400;font-size:48px;line-height:1.13;letter-spacing:0}
+.word-window{font-size:1em;letter-spacing:0;min-width:132px}
+.location{font-family:var(--hand);font-size:18px;line-height:1.8;letter-spacing:0;margin-top:26px;max-width:365px}
+.education-major{display:inline-block;font-size:16px;letter-spacing:0}
+.location .education-major{padding:0}
+.introduction{top:90px;left:54px}
+.hero-art{width:54%;height:78%;right:18px;bottom:36px;mix-blend-mode:lighten;mask-image:linear-gradient(to right,transparent,#000 7%,#000 96%,transparent)}
+.hero-art img{object-fit:contain;object-position:center bottom;mask-image:linear-gradient(to bottom,transparent,#000 8%,#000 93%,transparent)}
+.note-three .note-front{font-family:var(--hand);font-size:34px;font-style:normal}
+.beliefs h2{font-size:27px;letter-spacing:.3px}
+.eyebrow,.footer-base,.note-index{font-family:var(--hand)}
+.eyebrow{font-size:14px}.note-index{font-size:14px}.footer-base{font-size:15px}
+.work-heading h2{letter-spacing:0}footer h2{letter-spacing:-1px}
+@media(min-width:1600px){.signature{font-size:72px}.hero-statement{font-size:53px}.introduction{left:65px;top:100px}}
+@media(min-width:801px) and (max-width:1000px){.introduction{left:30px;top:70px}.signature{font-size:58px}.hero-statement{font-size:40px}.english-name{font-size:29px;margin-bottom:24px}.location{font-size:16px;max-width:300px}.education-major{font-size:14px}.hero-art{width:55%;height:72%;right:12px;bottom:32px}}
+@media(max-width:800px){.board-hero{height:760px}.introduction{top:44px;left:30px;right:24px}.signature{font-size:60px}.english-name{font-size:29px;margin-bottom:23px}.hero-statement{font-size:44px}.location{font-size:17px;line-height:1.8;margin-top:21px;max-width:none}.education-major{font-size:15px}.hero-art{width:94%;height:46%;right:4%;bottom:25px}.beliefs h2{font-size:24px}}
+@media(max-width:400px){.introduction{left:23px;right:14px}.signature{font-size:54px}.hero-statement{font-size:39px}.location{font-size:16px}.education-major{font-size:14px}.board-hero{height:710px}.hero-art{height:42%}.footer-base{font-size:13px}}

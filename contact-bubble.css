@@ -1,0 +1,19 @@
+.contact-trigger{border:0;background:none;color:inherit;line-height:inherit;cursor:pointer}
+.contact-trigger[aria-expanded=true]>svg{stroke-dashoffset:0}
+.contact-bubble{position:fixed;inset:auto;margin:0;padding:18px 21px 10px;width:min(304px,calc(100vw - 32px));box-sizing:border-box;overflow:visible;color:#34402f;background:#f0e7d3;border:1.7px solid #637055;border-radius:21px 17px 25px 15px / 17px 24px 18px 22px;box-shadow:3px 5px 0 #59664b17,0 12px 28px #25282520;transform-origin:var(--tail-x,75%) top;font-family:var(--hand)}
+.contact-bubble::before{content:"";position:absolute;top:-9px;left:calc(var(--tail-x,75%) - 9px);width:16px;height:16px;background:#f0e7d3;border-top:1.7px solid #637055;border-left:1.7px solid #637055;transform:rotate(45deg) skew(-8deg);border-top-left-radius:3px}
+.contact-bubble__header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
+.contact-bubble__header h2{margin:0;font:400 23px/1.5 var(--hand)}
+.contact-bubble__close{display:grid;place-items:center;width:36px;height:36px;border:0;background:none;color:#657155;font:28px/1 var(--hand);cursor:pointer}
+.contact-bubble__details{margin:0}
+.contact-bubble__row{display:grid;grid-template-columns:37px minmax(0,1fr);align-items:center;gap:10px;min-height:50px}
+.contact-bubble__row+.contact-bubble__row{border-top:1px dashed #8b967756}
+.contact-bubble dt{font:18px/1.5 var(--hand);color:#637055}
+.contact-bubble dd{display:flex;align-items:center;justify-content:space-between;gap:7px;margin:0;min-width:0}
+.contact-number{font:17px/1.5 Arial,sans-serif;letter-spacing:.15px;user-select:all;overflow-wrap:anywhere}
+.contact-copy{padding:8px 0 8px 7px;min-height:44px;border:0;background:none;color:#5a684a;font:15px/1.5 var(--hand);cursor:pointer;white-space:nowrap}
+.contact-copy:hover{color:#252825;text-decoration:underline;text-underline-offset:4px}
+.contact-bubble__status{min-height:20px;margin:3px 0 0;font:14px/20px var(--hand);color:#5a684a}
+.contact-bubble button:focus-visible{outline:2px dashed #7b895e;outline-offset:2px;border-radius:6px}
+.contact-bubble[data-tail=bottom]::before{top:auto;bottom:-9px;transform:rotate(225deg) skew(-8deg)}
+.contact-bubble[data-tail=bottom]{transform-origin:var(--tail-x,75%) bottom}

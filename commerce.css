@@ -1,0 +1,27 @@
+/* A new chapter in the existing illustrated portfolio. */
+.commerce-section{width:min(1000px,calc(100% - 210px));margin:0 auto 100px;color:var(--ink);scroll-margin-top:45px}
+.commerce-heading{padding:44px 0 30px;border-top:1px solid #25282555}
+.commerce-heading h2{font:400 58px/1.35 var(--hand);margin:20px 0 0}
+.commerce-board{padding:38px 42px 32px;border:2px solid #9eaa88;border-radius:23px 29px 21px 26px;background:#252825 url('assets/chalk-board.svg') center top/1000px 880px;color:#eee5d3;box-shadow:3px 6px 0 #8a957642}
+.commerce-intro{display:grid;grid-template-columns:160px minmax(0,1fr);align-items:center;gap:32px}
+.commerce-illustration{display:block;width:160px;height:180px;object-fit:contain;transform:rotate(-5deg)}
+.commerce-role{margin:0 0 10px;font-size:15px;line-height:1.8;color:#c6cfb7}
+.commerce-intro h3{font:400 40px/1.3 var(--hand);margin:0 0 13px}
+.commerce-lead{font-size:17px;line-height:1.9;margin:0;max-width:610px}
+.commerce-account{display:inline-flex;align-items:center;min-height:44px;margin-top:16px;border-bottom:1px dashed #c1cca8;color:#d9e1c7;font-size:17px;text-decoration:none;transition:color .2s,border-color .2s}
+.commerce-account:hover{color:#f3e6be;border-color:currentColor}
+.commerce-account:focus-visible{outline:2px dashed #c1cca8;outline-offset:5px}
+.commerce-work,.commerce-results{border-top:1px solid #b6c39b4a;margin-top:30px;padding-top:25px}
+.commerce-board h4{font:400 22px/1.5 var(--hand);margin:0 0 20px;color:#e2e5d1}
+.commerce-work-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.commerce-work h5{font:400 19px/1.5 var(--hand);color:#c7d4b4;margin:0 0 8px}
+.commerce-work p{font-size:16px;line-height:1.9;margin:0;color:#dedfce}
+.commerce-results dl{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:20px;margin:0}
+.commerce-results dl>div{display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:8px}
+.commerce-results dt{font-size:15px;line-height:1.7;color:#c8cdbb}
+.commerce-results dd{font:400 32px/1.3 var(--hand);color:#efe6cc;margin:0}
+.commerce-data-note{font-size:14px;line-height:1.8;color:#b8c1a6;margin:23px 0 0}
+.resume-commerce{margin-top:25px!important}
+@media(max-width:1000px){.commerce-section{width:calc(100% - 140px)}.commerce-board{padding:30px}.commerce-intro{grid-template-columns:130px minmax(0,1fr);gap:22px}.commerce-illustration{width:130px;height:160px}.commerce-work-grid{gap:20px}.commerce-results dd{font-size:28px}}
+@media(max-width:680px){.commerce-section{width:calc(100% - 64px);margin-bottom:70px}.commerce-heading{padding:32px 0 23px}.commerce-heading h2{font-size:38px}.commerce-board{padding:24px 21px;border-radius:19px 24px 20px 22px}.commerce-intro{grid-template-columns:1fr;gap:13px}.commerce-illustration{width:112px;height:112px;margin:0 auto}.commerce-intro h3{font-size:32px}.commerce-role{font-size:14px}.commerce-lead{font-size:16px}.commerce-work-grid{grid-template-columns:1fr;gap:19px}.commerce-work,.commerce-results{margin-top:25px;padding-top:22px}.commerce-board h4{font-size:20px;margin-bottom:17px}.commerce-results dl{grid-template-columns:1fr 1fr;gap:22px 15px}.commerce-later-result{grid-column:1/-1;padding-top:18px;border-top:1px dashed #b6c39b33}.commerce-results dd{font-size:27px}.commerce-results dt{font-size:14px}.commerce-data-note{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.commerce-account{transition:none}}

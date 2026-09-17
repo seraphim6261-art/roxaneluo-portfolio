@@ -1,0 +1,36 @@
+/* A single charcoal notebook on a soft warm ivory page. */
+:root{--paper:#e6ddcb;--ink:#252825;--paper-muted:#62665b;--frame:var(--preview-frame,#a3ac8a)}
+body{background:var(--paper);color:var(--ink)}
+.chalk-dust{opacity:.035;mix-blend-mode:multiply;filter:brightness(.45)}
+.notebook{color:var(--chalk);box-shadow:3px 8px 0 #252825,0 20px 35px #25282512}
+.stamp-rail{mix-blend-mode:multiply;opacity:.8}
+.stamp-rail .stamp.doodle-border{filter:url('#doodle-ink')}
+.stamp-rail .stamp.doodle-border:nth-child(6n){filter:url('#doodle-cutout') brightness(.56) saturate(.7)}
+.background-doodles{mix-blend-mode:multiply}
+.background-doodles .doodle-creative{filter:url('#doodle-ink');opacity:.045}
+.floating.supplied-doodle,.footer-flower.supplied-doodle{filter:url('#doodle-ink');opacity:.75}
+.topbar{color:var(--ink)}
+.nav-link:hover{color:#766009}
+.nav-link>svg{stroke:var(--ink)}
+.nav-link.active>svg{stroke:#9b810d}
+.work-section,.work-heading,footer{color:var(--ink)}
+.eyebrow,.handwritten,.footer-base{color:var(--paper-muted)}
+.work-heading h2,footer h2{filter:none}
+.work-heading h2 em,footer h2 a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:5px;text-underline-offset:7px}
+.work-piece,.piece-two,.piece-three{background:#efe6d6;color:var(--ink);border-color:#252825ad;box-shadow:4px 7px 0 #25282520}
+.work-piece.is-dragging{box-shadow:8px 15px 25px #25282525}
+.sketch-preview{border-color:#25282530;background-image:linear-gradient(#25282508 1px,transparent 1px),linear-gradient(90deg,#25282508 1px,transparent 1px)}
+.sketch-preview svg{stroke:var(--ink)}
+.sketch-preview .yellow-stroke,.piece-label span{stroke:#8b7314;color:#766009}
+.email{border-bottom-color:var(--paper-muted)}
+.footer-base{border-top-color:#25282535}
+footer h2 a:hover{border-bottom-color:var(--ink)}
+a:focus-visible,.work-piece:focus-visible{outline-color:var(--ink)}
+.notebook button:focus-visible{outline-color:var(--yellow)}
+
+/* The frame and middle divider share the same dry sage chalk. */
+.notebook{border-color:transparent;background-clip:padding-box;box-shadow:0 8px 22px #25282514}
+.cover-edge{inset:-14px;z-index:1;background:none;border:14px solid var(--frame);border-radius:inherit;filter:url('#soft-chalk-border');opacity:.95}
+.bookmark{background:var(--frame);filter:url('#soft-chalk-border');opacity:.95}
+.hinge{border-top-color:color-mix(in srgb,var(--frame) 25%,transparent)}
+@media(max-width:640px){.cover-edge{inset:-7px;border-width:7px}}

@@ -1,0 +1,68 @@
+/* Chapters use 01–03; smaller work labels use A, B and C by category. */
+.chapter-heading{
+ --chapter-accent:#657451;--chapter-rule:#84906d;--chapter-muted:#5d6654;
+ position:relative;border:0;padding:36px 0 32px;margin:0;
+}
+.chapter-heading::before{
+ content:"";position:absolute;inset:0 0 auto;height:5px;background:var(--chapter-rule);
+ clip-path:polygon(0 35%,12% 5%,34% 40%,52% 17%,74% 38%,95% 15%,100% 42%,100% 67%,76% 73%,54% 55%,31% 83%,11% 58%,0 80%);
+ opacity:.8;pointer-events:none;
+}
+.chapter-heading .chapter-kicker{
+ margin:0 0 10px 104px;color:var(--chapter-muted);font:400 14px/1.6 var(--hand);letter-spacing:1.6px;
+}
+.chapter-heading h2{
+ display:grid;grid-template-columns:80px minmax(0,1fr);gap:24px;align-items:baseline;
+ margin:0;font:400 clamp(36px,4vw,52px)/1.3 var(--hand);letter-spacing:0;color:var(--ink);
+}
+.chapter-number{
+ position:relative;display:block;font:400 1.28em/1 var(--hand);color:var(--chapter-accent);
+ font-variant-numeric:tabular-nums;letter-spacing:-.06em;transform:rotate(-3deg);
+}
+.chapter-number::after{
+ content:"";position:absolute;left:4px;right:6px;bottom:-12px;height:3px;background:currentColor;
+ clip-path:polygon(0 70%,36% 10%,70% 25%,100% 0,97% 60%,38% 70%,0 100%);opacity:.7;
+}
+.chapter-name{min-width:0;text-wrap:balance;overflow-wrap:anywhere}
+.chapter-heading .chapter-description{
+ margin:16px 0 0 104px;max-width:680px;font:400 18px/1.8 var(--hand);color:var(--chapter-muted);
+}
+.doubao-section{padding-top:108px}
+.doubao-section>.chapter-heading{margin-bottom:4px}
+.films-section{margin-top:0;margin-bottom:110px}
+.films-heading.chapter-heading{padding-bottom:24px}
+.commerce-heading.chapter-heading{padding-bottom:36px}
+/* A lighter break within each chapter distinguishes projects from chapters. */
+.doubao-project+.doubao-project{border-top:1px dashed #7883655c;padding-top:42px}
+.film-project+.film-project{border-top:1px dashed #7883655c;padding-top:38px}
+@media(max-width:800px){
+ .chapter-heading h2{font-size:38px;grid-template-columns:64px minmax(0,1fr);gap:20px}
+ .chapter-heading .chapter-kicker,.chapter-heading .chapter-description{margin-left:84px}
+ .chapter-heading .chapter-kicker{font-size:13px;letter-spacing:1px}
+ .chapter-heading .chapter-description{font-size:17px}
+}
+@media(max-width:600px){
+ .chapter-heading{padding-top:28px;padding-bottom:26px}
+ .chapter-heading h2{font-size:30px;grid-template-columns:44px minmax(0,1fr);gap:14px;line-height:1.4}
+ .chapter-number{font-size:1.25em}
+ .chapter-number::after{bottom:-8px;left:1px;right:1px}
+ .chapter-heading .chapter-kicker{margin-left:58px;margin-bottom:8px;font-size:12px;letter-spacing:.5px}
+ .chapter-heading .chapter-description{margin:20px 0 0;font-size:16px}
+ .doubao-section{padding-top:88px}
+ .films-section{margin-bottom:80px}
+ .commerce-heading.chapter-heading{padding-bottom:28px}
+ .doubao-project+.doubao-project,.film-project+.film-project{padding-top:30px}
+}
+/* Work labels sit beside the title; film titles introduce the player above it. */
+.work-title{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:14px;align-items:baseline}
+.work-title .work-code{font:400 18px/1.3 var(--hand);letter-spacing:.04em;color:#657451;border-bottom:1px solid #84906d;padding:0 1px 4px;white-space:nowrap}
+.work-title .work-name{min-width:0;overflow-wrap:anywhere;text-wrap:balance}
+.film-project>.work-title{font:400 34px/1.4 var(--hand);margin:0 0 20px;color:var(--ink)}
+.palace-heading .work-title .work-code,.commerce-board .work-title .work-code{color:#c4d0ad;border-color:#a6b58c}
+.directory-item__code{display:inline-block;font-size:14px;line-height:1.5;letter-spacing:.04em;color:#b7c5a2;min-width:2.2em;margin-right:6px}
+@media(max-width:600px){
+ .work-title{gap:10px}
+ .work-title .work-code{font-size:16px}
+ .film-project>.work-title{font-size:27px;line-height:1.45;margin-bottom:17px}
+ .directory-item__code{font-size:14px;min-width:2em;margin-right:4px}
+}

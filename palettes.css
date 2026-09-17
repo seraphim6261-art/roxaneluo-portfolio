@@ -1,0 +1,2 @@
+/* Palette previews affect only the outer chalk frame. */
+html[data-palette] .cover-edge{border-color:var(--preview-frame)}

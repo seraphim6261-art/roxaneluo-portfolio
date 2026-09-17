@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1100" viewBox="0 0 1440 1100">
+ <defs>
+  <filter id="rub" x="-20%" y="-60%" width="140%" height="220%"><feTurbulence baseFrequency=".012 .11" numOctaves="3" seed="8" result="grain"/><feDisplacementMap in="SourceGraphic" in2="grain" scale="29"/><feGaussianBlur stdDeviation="3 1.5"/></filter>
+  <filter id="chalk"><feTurbulence type="fractalNoise" baseFrequency=".47" numOctaves="3" stitchTiles="stitch" result="noise"/><feColorMatrix in="noise" type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".15"/></feComponentTransfer></filter>
+ </defs>
+ <g fill="none" stroke="#eeeedd" filter="url(#rub)" stroke-linecap="round">
+  <path opacity=".035" stroke-width="49" d="M-100 195C135 170 174 40 479 73M975 145c90 30 249-58 515-108M-80 1010c106-74 245-100 372-92M1150 881c85 17 215-73 351-86"/>
+  <path opacity=".03" stroke-width="25" d="M-32 470c76-75 123-72 205-153M1094 383c120-110 210-82 384-109M60 1080c153-90 303-114 550-90M853 1040c136-13 290-54 415-136"/>
+  <path opacity=".017" stroke-width="73" d="M150 675c180-80 298-64 463-29M709 287c95-51 162-30 206-45M558 804c109-72 191-30 284-12"/>
+ </g>
+ <path fill="#fff" filter="url(#chalk)" opacity=".14" d="M0 0h1440v1100H0z"/>
+</svg>
