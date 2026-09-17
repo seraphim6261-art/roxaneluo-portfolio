@@ -643,3 +643,9 @@ body.directory-open{overflow:hidden}
  .film-project>.work-title{font-size:27px;line-height:1.45;margin-bottom:17px}
  .directory-item__code{font-size:14px;min-width:2em;margin-right:4px}
 }
+
+/* authored-content.css */
+/* Author-approved copy is part of the page, independent of browser storage. */
+.authored-copy{font-family:var(--hand);white-space:pre-wrap;overflow-wrap:anywhere}
+.data-note:has(>.authored-copy:empty),.snapshot-caption:has(>.authored-copy:empty),.chapter-description:has(>.authored-copy:only-child:empty),.commerce-data-note:has(>.authored-copy:empty){display:none}
+.hero-art{translate:var(--image-x,0px) var(--image-y,0px);scale:var(--image-scale,1)}
