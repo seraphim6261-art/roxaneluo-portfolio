@@ -1,0 +1,10 @@
+/* Limit browser save affordances without changing playback or image quality. */
+img, video { -webkit-touch-callout: none; }
+img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
+.dialog-original[hidden] { display: none; }
+.process-image-preview { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.process-image-preview:hover img { transform: translateY(-4px); }
+.process-image-preview:focus-visible { outline: 2px dashed var(--sage, #a4b18b); outline-offset: 5px; }
+.local-video-retry { color: inherit; font: inherit; padding: 0; border: 0; border-bottom: 1px solid currentColor; background: none; cursor: pointer; }
+body.media-image-viewing { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .process-image-preview:hover img { transform: none; } }

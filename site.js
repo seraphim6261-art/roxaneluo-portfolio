@@ -174,7 +174,7 @@ window.douyinStats = {
  function titleOf(button){return button.closest('.douyin-card')?.querySelector('h4')?.textContent.trim()||button.dataset.title;}
  function loadVideo(button){
   clearTimeout(loadTimeout);const generation=++playerGeneration;wide=button.dataset.wide==='true';
-  dialog.querySelector('#video-dialog-title').textContent=titleOf(button);const original=dialog.querySelector('.dialog-original');original.href='https://www.douyin.com/video/'+button.dataset.video;original.textContent='在抖音查看原片 ↗';
+  dialog.querySelector('#video-dialog-title').textContent=titleOf(button);const original=dialog.querySelector('.dialog-original');original.href='https://www.douyin.com/video/'+button.dataset.video;original.textContent='在抖音查看原片 ↗';original.hidden=false;
   const frame=document.createElement('iframe');activeFrame=frame;frame.title=titleOf(button)+' · 抖音视频';frame.src=`https://open.douyin.com/player/video?vid=${button.dataset.video}&autoplay=0`;frame.allow='fullscreen; autoplay; encrypted-media; picture-in-picture';frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';
   frame.addEventListener('load',()=>{if(generation!==playerGeneration)return;clearTimeout(loadTimeout);status.textContent='';},{once:true});
   stage.replaceChildren(frame);status.textContent='正在载入…';[...bookmarks.children].forEach(b=>b.setAttribute('aria-current',String(b.dataset.video===button.dataset.video)));fitDialog();
@@ -192,7 +192,7 @@ window.douyinStats = {
  dialog.querySelector('.dialog-fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await stage.requestFullscreen()}catch{status.textContent='可使用播放器右下角的全屏按钮。'}});
  window.visualViewport?.addEventListener('resize',()=>{if(dialog.open)fitDialog()});
  document.addEventListener('fullscreenchange',()=>{if(dialog.open)fitDialog()});
- document.querySelectorAll('.portrait-film').forEach(container=>{const button=document.createElement('button');button.className='local-enlarge';button.type='button';button.textContent='放大观看 ↗';container.after(button);button.addEventListener('click',()=>{beginDialog(button);wide=false;bookmarks.replaceChildren();const source=container.querySelector('video'),video=source.cloneNode(true);video.preload='metadata';video.autoplay=false;dialog.querySelector('#video-dialog-title').textContent=container.closest('.film-project').querySelector('h3').textContent;stage.replaceChildren(video);const link=dialog.querySelector('.dialog-original');link.href=source.querySelector('source').src;link.textContent='单独打开视频 ↗';status.textContent='';fitDialog();});});
+ document.querySelectorAll('.portrait-film').forEach(container=>{const button=document.createElement('button');button.className='local-enlarge';button.type='button';button.textContent='放大观看 ↗';container.after(button);button.addEventListener('click',()=>{beginDialog(button);wide=false;bookmarks.replaceChildren();const source=container.querySelector('video'),video=source.cloneNode(true);video.preload='metadata';video.autoplay=false;dialog.querySelector('#video-dialog-title').textContent=container.closest('.film-project').querySelector('h3').textContent;stage.replaceChildren(video);const link=dialog.querySelector('.dialog-original');link.hidden=true;link.removeAttribute('href');status.textContent='';fitDialog();});});
  document.querySelectorAll('video').forEach(video=>{video.addEventListener('play',()=>document.querySelectorAll('video').forEach(v=>{if(v!==video)v.pause()}));video.addEventListener('error',()=>{const message=video.parentElement.querySelector('.local-video-error');if(message)message.hidden=false;});});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)document.querySelectorAll('video').forEach(v=>v.pause())});
  const revealTargets=[...document.querySelectorAll('.doubao-project>header,.douyin-card,.film-overline,.film-project>.work-title,.film-stage,.film-description,.commerce-heading,.commerce-board')];
@@ -512,4 +512,86 @@ window.douyinStats = {
   art.style.setProperty('--image-scale',mobile.matches?'1':'1.15');
  }
  new ResizeObserver(position).observe(board);mobile.addEventListener('change',position);position();
+})();
+
+;
+/* media-guard.js */
+(() => {
+  'use strict';
+  // Hide casual save actions; public media URLs are not access-controlled.
+  const mediaSelector = 'img, video';
+  function protect(root) {
+    const media = root.matches?.(mediaSelector) ? [root] : [];
+    media.push(...(root.querySelectorAll?.(mediaSelector) || []));
+    for (const element of media) {
+      element.draggable = false;
+      if (element.tagName === 'VIDEO') element.controlsList?.add('nodownload');
+    }
+  }
+  protect(document);
+  new MutationObserver(records => {
+    for (const record of records) for (const node of record.addedNodes) {
+      if (node.nodeType === Node.ELEMENT_NODE) protect(node);
+    }
+  }).observe(document.body, { childList: true, subtree: true });
+  for (const eventName of ['contextmenu', 'dragstart']) {
+    document.addEventListener(eventName, event => {
+      if (event.target instanceof Element && event.target.closest(mediaSelector)) event.preventDefault();
+    }, { capture: true });
+  }
+
+  // Process artwork stays in the site instead of opening a raw image tab.
+  const triggers = [...document.querySelectorAll('.process-image-preview')];
+  if (!triggers.length) return;
+  const viewer = document.createElement('dialog');
+  viewer.className = 'palace-viewer media-image-viewer';
+  viewer.setAttribute('aria-labelledby', 'media-image-title');
+  viewer.setAttribute('data-lenis-prevent', '');
+  viewer.innerHTML = '<header class="palace-viewer-heading"><h2 id="media-image-title">创作过程</h2><button class="palace-viewer-close" type="button" aria-label="关闭大图">×</button></header><div class="palace-viewer-canvas"><img class="palace-viewer-image" alt="" draggable="false"><p class="palace-viewer-message" role="status"></p></div>';
+  document.body.append(viewer);
+  const image = viewer.querySelector('img');
+  const close = viewer.querySelector('button');
+  const message = viewer.querySelector('[role="status"]');
+  let opener = null, savedScroll = 0;
+  triggers.forEach(button => button.addEventListener('click', () => {
+    opener = button;
+    savedScroll = scrollY;
+    const scroll = window.portfolioScroll;
+    if (scroll) { scroll.scrollTo(savedScroll, { immediate: true }); scroll.stop(); }
+    document.querySelectorAll('video').forEach(video => video.pause());
+    const source = button.querySelector('img');
+    viewer.querySelector('h2').textContent = button.closest('.film-project').querySelector('h3').textContent.trim() + ' · 创作过程';
+    message.textContent = '正在载入…';
+    image.onload = () => { message.textContent = ''; };
+    image.onerror = () => { message.textContent = '图片暂时未能加载，请关闭后重试。'; };
+    image.alt = source.alt;
+    image.src = button.dataset.image;
+    document.body.classList.add('media-image-viewing');
+    viewer.showModal();
+    close.focus({ preventScroll: true });
+  }));
+  close.addEventListener('click', () => viewer.close());
+  viewer.addEventListener('click', event => {
+    if (event.target !== viewer) return;
+    const rect = viewer.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) viewer.close();
+  });
+  viewer.addEventListener('close', () => {
+    image.onload = image.onerror = null;
+    image.removeAttribute('src');
+    message.textContent = '';
+    document.body.classList.remove('media-image-viewing');
+    const scroll = window.portfolioScroll;
+    scroll?.start();
+    if (scroll) scroll.scrollTo(savedScroll, { immediate: true });
+    else window.scrollTo({ top: savedScroll, behavior: 'instant' });
+    opener?.focus({ preventScroll: true });
+    opener = null;
+  });
+  document.querySelectorAll('.local-video-retry').forEach(button => button.addEventListener('click', () => {
+    const video = button.closest('.film-stage').querySelector('video');
+    button.closest('.local-video-error').hidden = true;
+    video.load();
+    video.play().catch(() => {});
+  }));
 })();
