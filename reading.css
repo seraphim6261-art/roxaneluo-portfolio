@@ -355,3 +355,50 @@ body.reading-view{--reading-width:1000px}
  .reading-view .directory-toggle__icon{width:52px!important;height:48px!important}
 }
 @media(max-width:640px){.reading-view .directory-toggle{left:42px;width:139px}.reading-view .directory-toggle__label{font-size:16px}}
+
+/* Chalk drawings are the selectors; loose circles show the selected artifact. */
+.reading-view .palace-artifacts{gap:14px;padding:12px 10px 14px;border:0;border-radius:0;box-shadow:none}
+.reading-view .palace-artifact{display:flex;flex-direction:column;gap:0;padding:8px 3px 3px;min-height:0;text-align:center;isolation:isolate}
+.reading-view .palace-doodle{width:96px;max-width:100%;grid-row:auto;opacity:1}
+.reading-view .palace-artifact-name{align-self:center;margin-top:9px}
+.reading-view .palace-entry-hint{align-self:center;margin-top:3px;opacity:.8}
+.reading-view .palace-artifact::before{display:none}
+.reading-view .palace-selection-mark{position:absolute;left:50%;top:0;translate:-50% 0;width:155px;height:147px;max-width:100%;overflow:visible;fill:none;stroke:#e7d58b;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;filter:url('#soft-chalk-border');transform:rotate(-6deg) scale(.95);opacity:0;pointer-events:none;transition:opacity .18s,transform .24s}
+.reading-view .palace-selection-mark .chalk-retrace{opacity:.5;stroke-width:1.7}
+.reading-view .palace-artifact:nth-child(2) .palace-selection-mark{rotate:9deg}
+.reading-view .palace-artifact:nth-child(3) .palace-selection-mark{rotate:-5deg}
+.reading-view .palace-artifact:nth-child(4) .palace-selection-mark{rotate:5deg}
+.reading-view .palace-artifact:hover .palace-selection-mark{opacity:.35;transform:rotate(-3deg) scale(1)}
+.reading-view .palace-artifact[aria-expanded=true] .palace-selection-mark{opacity:1;transform:rotate(-6deg) scale(1)}
+
+/* Make the floating directory read as a button, not a background illustration. */
+.reading-view .directory-toggle{width:112px;min-height:154px;gap:3px;padding:12px 8px 11px;border:2px solid #6e8057;border-radius:9px 15px 11px 8px;background:#cbd2b9;color:#293724;box-shadow:3px 4px 0 #84966c66;filter:none;transform:rotate(-2deg)}
+.reading-view .directory-toggle::before{display:block;inset:5px;border:1px dashed #72805c7d;border-radius:5px 10px 6px 4px;pointer-events:none}
+.reading-view .directory-toggle__icon{width:76px!important;height:64px!important;stroke:#425234;color:#425234}
+.reading-view .directory-toggle__label{font-size:18px;line-height:1.5}
+.reading-view .directory-toggle__hint{display:flex;align-items:center;gap:3px;margin-top:3px;padding:6px 0 0;border:0;border-top:1px solid #7a8a6366;color:#34432a;font:13px/1.4 var(--hand)}
+.reading-view .directory-toggle__hint svg{width:22px;height:18px;stroke-width:1.8}
+.reading-view .directory-toggle:hover{background:#d6ddc5;transform:translateX(3px) rotate(0);box-shadow:4px 5px 0 #84966c80}
+.reading-view .directory-toggle:active{transform:translate(2px,2px);box-shadow:1px 2px 0 #84966c80}
+.reading-view .index-paper-back{fill:#97ab77;stroke:#586c40}
+.reading-view .index-paper{fill:#f4ead1;stroke:#51623d}
+.reading-view .index-pencil{stroke:#60724a}
+@media(max-width:1400px){
+ .reading-view .directory-toggle{display:grid;grid-template-columns:48px 1fr;gap:0 8px;width:172px;min-height:70px;padding:8px 12px 8px 8px}
+ .reading-view .directory-toggle__icon{grid-row:1/3;width:48px!important;height:48px!important}
+ .reading-view .directory-toggle__label{font-size:17px;align-self:end;justify-content:center}
+ .reading-view .directory-toggle__hint{font-size:12px;align-self:start;justify-content:center;margin-top:0;padding-top:3px}
+}
+@media(max-width:1050px){
+ .reading-view .palace-doodle{width:76px}
+ .reading-view .palace-selection-mark{width:130px;height:117px}
+}
+@media(max-width:700px){
+ .reading-view .palace-artifacts{gap:4px;padding:10px 4px 12px}
+ .reading-view .palace-doodle{width:52px}
+ .reading-view .palace-selection-mark{width:80px;height:83px;max-width:calc(100% + 10px);stroke-width:3.5}
+ .reading-view .palace-artifact-name{margin-top:8px}
+ .reading-view .palace-artifact{padding-top:5px}
+}
+@media(max-width:640px){.reading-view .directory-toggle{width:158px;grid-template-columns:40px 1fr;gap:0 6px}.reading-view .directory-toggle__icon{width:40px!important;height:44px!important}.reading-view .directory-toggle__label{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.reading-view .palace-selection-mark{transition:none}}
