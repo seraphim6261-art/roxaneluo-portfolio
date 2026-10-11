@@ -6,7 +6,7 @@
  <meta name="theme-color" content="#E6DDCB">
  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='7' fill='%23252825'/%3E%3Cpath d='M10 9v23h18M19 11l4 6 7-2-4 6 3 6-7-2-5 5 1-8-6-4 7-1z' fill='none' stroke='%23F0D84B' stroke-width='2'/%3E%3C/svg%3E">
  <link rel="preload" href="assets/fonts/wenkai-core.woff2" as="font" type="font/woff2" crossorigin="">
- <link rel="stylesheet" href="site.css?v=212f3b5bc56d">
+ <link rel="stylesheet" href="site.css?v=35eee5db828f">
  <script src="palettes.js"></script>
 </head>
 <body class="reading-view">
@@ -25,7 +25,7 @@
  </defs></svg>
  <div class="stamp-rail rail-left" aria-hidden="true"></div><div class="stamp-rail rail-right" aria-hidden="true"></div>
  <div class="chalk-dust" aria-hidden="true"></div>
- <header class="topbar"><button class="directory-toggle" type="button" aria-label="展开作品目录" aria-haspopup="dialog" aria-controls="work-directory" aria-expanded="false"><svg class="directory-toggle__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5 18 3 18.5 21 12 17 5.5 21Z"></path><path d="m9 8 6-.4M9 11.5l5.5-.2"></path></svg><span class="directory-toggle__label"><span>作品</span><span>目录</span></span></button>
+ <header class="topbar">
   <a class="home-mark" href="#top" aria-label="返回首页"><svg viewBox="0 0 80 80"><use href="#smile"></use></svg></a>
   <nav aria-label="主导航"><a class="nav-link active" href="#about">概览</a><a class="nav-link" href="#doubao">实习作品</a><a class="nav-link" href="#films">广告作品</a><a class="nav-link" href="#resume">经历与技能</a><a class="nav-link" href="#connect">联系我</a></nav>
  </header>
@@ -217,7 +217,7 @@ AI 产品经理实习生</span></p><p class="resume-date"><span data-edit-key="c
 
 
 
-<dialog class="directory-drawer" id="work-directory" aria-labelledby="directory-title" data-lenis-prevent="">
+<button class="directory-toggle" type="button" aria-label="展开作品目录" aria-haspopup="dialog" aria-controls="work-directory" aria-expanded="false"><svg class="directory-toggle__icon" viewBox="0 0 96 84" aria-hidden="true"><path class="index-paper-back" d="m11 15 31 2 8 4 34-5 2 52-32 7-13-5-31-2Z"></path><path class="index-paper" d="M8 12Q29 6 47 17Q65 7 86 12L84 65Q66 61 48 72Q27 61 10 66Z"></path><path class="index-crease" d="m47 17 1 55M12 69q19-4 36 7 17-10 35-7"></path><path class="index-ribbon" d="m65 11 9-1-1 30-5-5-5 4Z"></path><path class="index-pencil" d="m19 24 19 3M20 32l17 2M20 42l15 2M20 50l19 5M57 47l17-3M57 56l17-3"></path><path class="index-spark" d="m7 4-3-3M47 7l-1-5M90 6l3-4"></path></svg><span class="directory-toggle__label"><span>作品</span><span>目录</span></span></button><dialog class="directory-drawer" id="work-directory" aria-labelledby="directory-title" data-lenis-prevent="">
   <header class="directory-drawer__header"><h2 id="directory-title"><span data-edit-key="copy-050">作品目录</span></h2><button class="directory-close" type="button" aria-label="收起作品目录"><span>收起</span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 4-6 6 6 6"></path></svg></button></header>
   <nav class="directory-drawer__content" aria-label="作品跳转" data-lenis-prevent="">
    <section class="directory-group" aria-labelledby="directory-internship"><h3 id="directory-internship"><span data-edit-key="copy-051" data-previous-text="实习作品">豆包实习作品</span></h3>
@@ -243,4 +243,5 @@ AI 产品经理实习生</span></p><p class="resume-date"><span data-edit-key="c
    </section>
   </nav>
  </dialog>
+
 </body></html>
