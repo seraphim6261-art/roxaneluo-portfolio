@@ -149,16 +149,16 @@ window.douyinStats = {
  const dialog=document.querySelector('.video-dialog'),stage=dialog.querySelector('.dialog-stage'),status=dialog.querySelector('.dialog-status'),closeButton=dialog.querySelector('.dialog-close'),bookmarks=dialog.querySelector('.dialog-bookmarks'),layout=dialog.querySelector('.dialog-layout');
  const railTracks=[...document.querySelectorAll('.stamp-rail')].map(rail=>{const track=document.createElement('div');track.className='rail-track';while(rail.firstChild)track.appendChild(rail.firstChild);rail.appendChild(track);return track;});
  let lenis=null,layoutPending=false,scrollPending=false,geometry=[],activeButton=null,loadTimeout=null,savedScroll=0,wide=false,activeFrame=null,playerGeneration=0;
- function setupScroll(){lenis?.destroy();lenis=null;if(!reduced.matches&&window.Lenis){lenis=new Lenis({autoRaf:true,lerp:.095,smoothWheel:true,syncTouch:false,wheelMultiplier:.9});if(dialog.open)lenis.stop();}window.portfolioScroll=lenis;}
+ function setupScroll(){lenis?.destroy();lenis=null;window.portfolioScroll=null;}
  setupScroll();
- function measure(){layoutPending=false;const y=scrollY,base=surface.getBoundingClientRect().top+y;surface.style.height=Math.round(resume.getBoundingClientRect().bottom+y+32-base)+'px';geometry=['about','resume','doubao','films','project-commerce'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+y}));lenis?.resize();renderScroll();}
+ function measure(){layoutPending=false;const y=scrollY;surface.style.height='100%';geometry=['about','doubao','films','project-commerce','resume','connect'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+y}));renderScroll();}
  function queueMeasure(){if(!layoutPending){layoutPending=true;requestAnimationFrame(measure)}}
  const layoutObserver=new ResizeObserver(queueMeasure);layoutObserver.observe(resume);layoutObserver.observe(notebook);
  document.fonts.ready.then(queueMeasure);document.addEventListener('portfolio:content-changed',queueMeasure);document.addEventListener('toggle',queueMeasure,true);window.addEventListener('resize',()=>{queueMeasure();if(dialog.open)fitDialog()});
  function renderScroll(){scrollPending=false;railTracks.forEach(track=>track.style.transform=reduced.matches?'':`translate3d(0,${-(scrollY*.12)}px,0)`);let active='about';geometry.forEach(s=>{if(s.top<=scrollY+innerHeight*.35)active=s.id});document.querySelectorAll('.nav-link').forEach(a=>{const yes=a.hash==='#'+active;a.classList.toggle('active',yes);if(yes)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')});}
  window.addEventListener('scroll',()=>{if(!scrollPending){scrollPending=true;requestAnimationFrame(renderScroll)}},{passive:true});
  reduced.addEventListener('change',()=>{setupScroll();queueMeasure();if(reduced.matches)document.querySelectorAll('.reveal-item').forEach(e=>e.classList.add('is-revealed'))});
- document.querySelectorAll('a[href^="#"]:not(.directory-item)').forEach(a=>a.addEventListener('click',event=>{const target=document.getElementById(a.hash.slice(1));if(!target)return;event.preventDefault();history.pushState(null,'',a.hash);const focusTarget=()=>{if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');target.focus({preventScroll:true})};const destination=Math.max(0,target.getBoundingClientRect().top+scrollY-35);if(lenis){lenis.scrollTo(scrollY,{immediate:true});lenis.scrollTo(destination,{lerp:0,duration:1,easing:t=>1-Math.pow(1-t,4),onComplete:focusTarget})}else{window.scrollTo({top:destination,behavior:reduced.matches?'instant':'smooth'});focusTarget();}}));
+ document.querySelectorAll('a[href^="#"]:not(.directory-item)').forEach(a=>a.addEventListener('click',event=>{if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;const target=document.getElementById(a.hash.slice(1));if(!target)return;event.preventDefault();history.pushState(null,'',a.hash);if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');target.focus({preventScroll:true});target.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});}));
  function fitDialog(){
   const compact=innerWidth<=600,hasGroup=bookmarks.children.length>1,fullscreen=document.fullscreenElement===stage;
   layout.classList.toggle('solo',!hasGroup);bookmarks.hidden=!hasGroup;
@@ -196,7 +196,7 @@ window.douyinStats = {
  document.querySelectorAll('video').forEach(video=>{video.addEventListener('play',()=>document.querySelectorAll('video').forEach(v=>{if(v!==video)v.pause()}));video.addEventListener('error',()=>{const message=video.parentElement.querySelector('.local-video-error');if(message)message.hidden=false;});});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)document.querySelectorAll('video').forEach(v=>v.pause())});
  const revealTargets=[...document.querySelectorAll('.doubao-project>header,.douyin-card,.film-overline,.film-project>.work-title,.film-stage,.film-description,.commerce-heading,.commerce-board')];
- if(!reduced.matches){document.body.classList.add('motion-ready');const reveal=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-revealed');reveal.unobserve(entry.target)}}),{rootMargin:'0px 0px -28px 0px',threshold:.05});revealTargets.forEach(el=>{el.classList.add('reveal-item');reveal.observe(el)});document.querySelectorAll('.douyin-gallery').forEach(g=>[...g.children].forEach((card,i)=>card.style.setProperty('--reveal-delay',(i%2)*65+'ms')));}
+ revealTargets.forEach(el=>el.classList.add('is-revealed'));
  queueMeasure();
 })();
 
@@ -276,7 +276,7 @@ window.douyinStats = {
     if (!data[id]) return;
     active = id;
     const panel = root.querySelector(`[data-process="${id}"]`);
-    panels.forEach(item => { item.hidden = item !== panel; });
+    panels.forEach(item => { item.hidden = false; });
     entries.forEach(item => item.setAttribute('aria-expanded', String(item.dataset.artifact === id)));
     const entryLabel = root.querySelector(`[data-artifact="${id}"] .palace-artifact-name`).textContent.trim();
     panel.querySelector('h4').textContent = entryLabel;
@@ -343,7 +343,7 @@ window.douyinStats = {
   }
   entries.forEach(button => button.addEventListener('click', () => selectArtifact(button.dataset.artifact)));
   panels.forEach(panel => {
-    panel.querySelector('.palace-return').addEventListener('click', () => {
+    panel.querySelector('.palace-return')?.addEventListener('click', () => {
       const entry = root.querySelector(`[data-artifact="${panel.dataset.process}"]`);
       panel.hidden = true;
       entry.setAttribute('aria-expanded', 'false');

@@ -72,7 +72,7 @@
     if (!data[id]) return;
     active = id;
     const panel = root.querySelector(`[data-process="${id}"]`);
-    panels.forEach(item => { item.hidden = item !== panel; });
+    panels.forEach(item => { item.hidden = false; });
     entries.forEach(item => item.setAttribute('aria-expanded', String(item.dataset.artifact === id)));
     const entryLabel = root.querySelector(`[data-artifact="${id}"] .palace-artifact-name`).textContent.trim();
     panel.querySelector('h4').textContent = entryLabel;
@@ -139,7 +139,7 @@
   }
   entries.forEach(button => button.addEventListener('click', () => selectArtifact(button.dataset.artifact)));
   panels.forEach(panel => {
-    panel.querySelector('.palace-return').addEventListener('click', () => {
+    panel.querySelector('.palace-return')?.addEventListener('click', () => {
       const entry = root.querySelector(`[data-artifact="${panel.dataset.process}"]`);
       panel.hidden = true;
       entry.setAttribute('aria-expanded', 'false');
