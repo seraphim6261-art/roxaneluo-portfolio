@@ -68,23 +68,24 @@
     if (lenis && !reduced.matches) lenis.scrollTo(Math.max(0,target.getBoundingClientRect().top+scrollY+offset), { duration: .7, easing: t => 1 - Math.pow(1 - t, 3) });
     else window.scrollTo({ top: Math.max(0, target.getBoundingClientRect().top + scrollY + offset), behavior: reduced.matches ? 'instant' : 'smooth' });
   }
-  function selectArtifact(id, focus = true) {
+  function selectArtifact(id, animate = true) {
     if (!data[id]) return;
     active = id;
     const panel = root.querySelector(`[data-process="${id}"]`);
-    panels.forEach(item => { item.hidden = false; });
-    entries.forEach(item => item.setAttribute('aria-expanded', String(item.dataset.artifact === id)));
+    panels.forEach(item => { item.hidden = item !== panel; });
+    entries.forEach(item => {
+      const selected = item.dataset.artifact === id;
+      item.setAttribute('aria-expanded', String(selected));
+      item.setAttribute('aria-pressed', String(selected));
+      item.querySelector('.palace-entry-hint').textContent = selected ? '正在展示' : '点击切换';
+    });
     const entryLabel = root.querySelector(`[data-artifact="${id}"] .palace-artifact-name`).textContent.trim();
     panel.querySelector('h4').textContent = entryLabel;
     panel.querySelector('.video-preview').dataset.title = entryLabel;
     panel.querySelector('.palace-sr-only').textContent = entryLabel;
     markStage(Number(panel.querySelector('.palace-featured').dataset.stageIndex));
     changed();
-    if (!reduced.matches) panel.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 400, easing: 'cubic-bezier(.2,.7,.2,1)' });
-    if (focus) {
-      panel.querySelector('h4').focus({ preventScroll: true });
-      requestAnimationFrame(() => scrollToElement(panel));
-    }
+    if (animate && !reduced.matches) panel.animate([{ opacity: .35 }, { opacity: 1 }], { duration: 200, easing: 'ease-out' });
   }
   function markStage(index) {
     const panel = root.querySelector(`[data-process="${active}"]`);
@@ -138,6 +139,7 @@
     close.focus({ preventScroll: true });
   }
   entries.forEach(button => button.addEventListener('click', () => selectArtifact(button.dataset.artifact)));
+  selectArtifact('gourd', false);
   panels.forEach(panel => {
     panel.querySelector('.palace-return')?.addEventListener('click', () => {
       const entry = root.querySelector(`[data-artifact="${panel.dataset.process}"]`);

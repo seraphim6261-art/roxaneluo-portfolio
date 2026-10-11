@@ -44,7 +44,8 @@
   event.preventDefault();event.stopPropagation();const target=document.getElementById(link.hash.slice(1));if(!target)return;
   await closeDirectory();history.pushState(null,'',link.hash);
   const focus=()=>{if(!target.hasAttribute('tabindex'))target.setAttribute('tabindex','-1');target.focus({preventScroll:true});queueCurrent()};
-  const destination=Math.max(0,target.getBoundingClientRect().top+scrollY-35),scroll=window.portfolioScroll;
+  const topbar=document.querySelector('.topbar'),offset=(topbar?.getBoundingClientRect().height||0)+20;
+  const destination=Math.max(0,target.getBoundingClientRect().top+scrollY-offset),scroll=window.portfolioScroll;
   if(scroll){scroll.scrollTo(scrollY,{immediate:true});scroll.scrollTo(destination,{duration:.95,lerp:0,easing:t=>1-Math.pow(1-t,4),onComplete:focus})}
   else{window.scrollTo({top:destination,behavior:reduced.matches?'instant':'smooth'});focus()}
  },true);
