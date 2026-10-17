@@ -1067,3 +1067,14 @@ body.reading-view{--reading-width:1000px}
 }
 @media(max-width:640px){.reading-view .directory-toggle{width:158px;grid-template-columns:40px 1fr;gap:0 6px}.reading-view .directory-toggle__icon{width:40px!important;height:44px!important}.reading-view .directory-toggle__label{font-size:16px}}
 @media(prefers-reduced-motion:reduce){.reading-view .palace-selection-mark{transition:none}}
+
+/* video-playback.css */
+/* Player controls stay within the existing frame, without moving project copy. */
+.video-quality-tools{position:absolute;z-index:3;top:10px;right:10px;display:flex;align-items:center;gap:3px;padding:4px;border:1px solid #c7cfb566;border-radius:7px 5px 8px 6px;background:#20271fec;color:#f4eddc;font:13px/1.4 var(--hand);box-shadow:0 2px 8px #0002}
+.video-quality-tools button{appearance:none;border:1px solid transparent;border-radius:4px;background:transparent;color:inherit;padding:6px 9px;font:inherit;cursor:pointer;min-height:32px}
+.video-quality-tools button[aria-pressed=true]{border-color:#c7cfb599;background:#c7cfb52b;color:#f3e9b1}
+.video-quality-tools button:hover{background:#c7cfb526}
+.video-quality-tools button:focus-visible{outline:2px solid #e7d58b;outline-offset:2px}
+.video-quality-status{position:absolute;right:0;top:calc(100% + 5px);width:max-content;max-width:min(250px,65vw);padding:5px 9px;border-radius:4px;background:#20271fec;color:#f4eddc;font-size:12px;pointer-events:none}
+.video-quality-status:empty{display:none}
+@media(max-width:640px){.video-quality-tools{top:7px;right:7px;font-size:12px}.video-quality-tools button{padding:5px 8px}}

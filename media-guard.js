@@ -40,7 +40,7 @@
     savedScroll = scrollY;
     const scroll = window.portfolioScroll;
     if (scroll) { scroll.scrollTo(savedScroll, { immediate: true }); scroll.stop(); }
-    document.querySelectorAll('video').forEach(video => video.pause());
+    document.querySelectorAll('video').forEach(video => { if (window.portfolioVideo) window.portfolioVideo.pause(video); else video.pause(); });
     const source = button.querySelector('img');
     viewer.querySelector('h2').textContent = button.closest('.film-project').querySelector('h3').textContent.trim() + ' · 创作过程';
     message.textContent = '正在载入…';

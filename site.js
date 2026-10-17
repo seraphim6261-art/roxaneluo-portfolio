@@ -148,7 +148,7 @@ window.douyinStats = {
  const notebook=document.querySelector('.story-notebook'),surface=document.querySelector('.blackboard-surface'),resume=document.querySelector('.resume-overview');
  const dialog=document.querySelector('.video-dialog'),stage=dialog.querySelector('.dialog-stage'),status=dialog.querySelector('.dialog-status'),closeButton=dialog.querySelector('.dialog-close'),bookmarks=dialog.querySelector('.dialog-bookmarks'),layout=dialog.querySelector('.dialog-layout');
  const railTracks=[...document.querySelectorAll('.stamp-rail')].map(rail=>{const track=document.createElement('div');track.className='rail-track';while(rail.firstChild)track.appendChild(rail.firstChild);rail.appendChild(track);return track;});
- let lenis=null,layoutPending=false,scrollPending=false,geometry=[],activeButton=null,loadTimeout=null,savedScroll=0,wide=false,activeFrame=null,playerGeneration=0;
+ let lenis=null,layoutPending=false,scrollPending=false,geometry=[],activeButton=null,loadTimeout=null,savedScroll=0,wide=false,activeFrame=null,playerGeneration=0,localPlayback=null;
  function setupScroll(){lenis?.destroy();lenis=null;window.portfolioScroll=null;}
  setupScroll();
  function measure(){layoutPending=false;const y=scrollY;surface.style.height='100%';geometry=['about','doubao','films','project-commerce','resume','connect'].map(id=>({id,top:document.getElementById(id).getBoundingClientRect().top+y}));renderScroll();}
@@ -170,7 +170,7 @@ window.douyinStats = {
   stage.style.setProperty('--frame-width',w+'px');stage.style.setProperty('--frame-height',h+'px');
   const frame=stage.querySelector('iframe');if(frame){frame.style.width=w+'px';frame.style.height=h+'px';frame.style.transform=`scale(${scale})`;}
  }
- function beginDialog(button){activeButton=button;savedScroll=scrollY;if(lenis){lenis.scrollTo(savedScroll,{immediate:true});lenis.stop();}document.querySelectorAll('video').forEach(v=>v.pause());document.body.classList.add('video-open');if(!dialog.open)dialog.showModal();closeButton.focus({preventScroll:true});}
+ function beginDialog(button){activeButton=button;savedScroll=scrollY;if(lenis){lenis.scrollTo(savedScroll,{immediate:true});lenis.stop();}document.querySelectorAll('video').forEach(v=>{if(window.portfolioVideo)window.portfolioVideo.pause(v);else v.pause()});document.body.classList.add('video-open');if(!dialog.open)dialog.showModal();closeButton.focus({preventScroll:true});}
  function titleOf(button){return button.closest('.douyin-card')?.querySelector('h4')?.textContent.trim()||button.dataset.title;}
  function loadVideo(button){
   clearTimeout(loadTimeout);const generation=++playerGeneration;wide=button.dataset.wide==='true';
@@ -185,14 +185,14 @@ window.douyinStats = {
   if(group.length>1)group.forEach(item=>{const tab=document.createElement('button');tab.className='dialog-bookmark';tab.type='button';tab.dataset.video=item.dataset.video;tab.setAttribute('aria-label','播放 '+titleOf(item));const img=document.createElement('img');img.src=item.querySelector('img').src;img.alt='';const label=document.createElement('span');label.textContent=titleOf(item);tab.append(img,label);tab.addEventListener('click',()=>loadVideo(item));bookmarks.append(tab)});
   loadVideo(button);
  }
- function cleanupVideo(){clearTimeout(loadTimeout);playerGeneration++;activeFrame=null;stage.replaceChildren();bookmarks.replaceChildren();status.textContent='';document.body.classList.remove('video-open');lenis?.start();if(lenis)lenis.scrollTo(savedScroll,{immediate:true});else window.scrollTo({top:savedScroll,behavior:'instant'});activeButton?.focus({preventScroll:true});activeButton=null;}
+ function cleanupVideo(){clearTimeout(loadTimeout);playerGeneration++;activeFrame=null;if(localPlayback){const {video,marker,toolbar,container}=localPlayback;window.portfolioVideo?.pause(video);video.pause();marker.replaceWith(video);if(toolbar)container.append(toolbar);localPlayback=null;}stage.replaceChildren();bookmarks.replaceChildren();status.textContent='';document.body.classList.remove('video-open');lenis?.start();if(lenis)lenis.scrollTo(savedScroll,{immediate:true});else window.scrollTo({top:savedScroll,behavior:'instant'});activeButton?.focus({preventScroll:true});activeButton=null;}
  document.querySelectorAll('.video-preview').forEach(button=>button.addEventListener('click',()=>openVideo(button)));
  closeButton.addEventListener('click',()=>dialog.close());dialog.addEventListener('close',cleanupVideo);
  dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close()});
  dialog.querySelector('.dialog-fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await stage.requestFullscreen()}catch{status.textContent='可使用播放器右下角的全屏按钮。'}});
  window.visualViewport?.addEventListener('resize',()=>{if(dialog.open)fitDialog()});
  document.addEventListener('fullscreenchange',()=>{if(dialog.open)fitDialog()});
- document.querySelectorAll('.portrait-film').forEach(container=>{const button=document.createElement('button');button.className='local-enlarge';button.type='button';button.textContent='放大观看 ↗';container.after(button);button.addEventListener('click',()=>{beginDialog(button);wide=false;bookmarks.replaceChildren();const source=container.querySelector('video'),video=source.cloneNode(true);video.preload='metadata';video.autoplay=false;dialog.querySelector('#video-dialog-title').textContent=container.closest('.film-project').querySelector('h3').textContent;stage.replaceChildren(video);const link=dialog.querySelector('.dialog-original');link.hidden=true;link.removeAttribute('href');status.textContent='';fitDialog();});});
+ document.querySelectorAll('.portrait-film').forEach(container=>{const button=document.createElement('button');button.className='local-enlarge';button.type='button';button.textContent='放大观看 ↗';container.after(button);button.addEventListener('click',()=>{beginDialog(button);wide=false;bookmarks.replaceChildren();const video=container.querySelector('video'),toolbar=container.querySelector('.video-quality-tools'),marker=document.createComment('video-home');video.replaceWith(marker);localPlayback={video,marker,toolbar,container};dialog.querySelector('#video-dialog-title').textContent=container.closest('.film-project').querySelector('h3').textContent;stage.replaceChildren(video);if(toolbar)stage.append(toolbar);const link=dialog.querySelector('.dialog-original');link.hidden=true;link.removeAttribute('href');status.textContent='';fitDialog();});});
  document.querySelectorAll('video').forEach(video=>{video.addEventListener('play',()=>document.querySelectorAll('video').forEach(v=>{if(v!==video)v.pause()}));video.addEventListener('error',()=>{const message=video.parentElement.querySelector('.local-video-error');if(message)message.hidden=false;});});
  document.addEventListener('visibilitychange',()=>{if(document.hidden)document.querySelectorAll('video').forEach(v=>v.pause())});
  const revealTargets=[...document.querySelectorAll('.doubao-project>header,.douyin-card,.film-overline,.film-project>.work-title,.film-stage,.film-description,.commerce-heading,.commerce-board')];
@@ -325,7 +325,7 @@ window.douyinStats = {
     savedScroll = scrollY;
     const lenis = window.portfolioScroll;
     if (lenis) { lenis.scrollTo(savedScroll, { immediate: true }); lenis.stop(); }
-    document.querySelectorAll('video').forEach(video => video.pause());
+    document.querySelectorAll('video').forEach(video => { if (window.portfolioVideo) window.portfolioVideo.pause(video); else video.pause(); });
     thumbs.replaceChildren();
     data[id].frames.forEach((frame, index) => {
       const thumb = document.createElement('button');
@@ -561,7 +561,7 @@ window.douyinStats = {
     savedScroll = scrollY;
     const scroll = window.portfolioScroll;
     if (scroll) { scroll.scrollTo(savedScroll, { immediate: true }); scroll.stop(); }
-    document.querySelectorAll('video').forEach(video => video.pause());
+    document.querySelectorAll('video').forEach(video => { if (window.portfolioVideo) window.portfolioVideo.pause(video); else video.pause(); });
     const source = button.querySelector('img');
     viewer.querySelector('h2').textContent = button.closest('.film-project').querySelector('h3').textContent.trim() + ' · 创作过程';
     message.textContent = '正在载入…';
@@ -597,4 +597,145 @@ window.douyinStats = {
     video.load();
     video.play().catch(() => {});
   }));
+})();
+
+;
+/* video-playback.js */
+(() => {
+  'use strict';
+  const videos = [...document.querySelectorAll('video[data-smooth-src]')];
+  const connection = navigator.connection;
+  const canPrefetch = () => !connection?.saveData && !/^(slow-)?2g$/.test(connection?.effectiveType || '');
+  const states = new WeakMap();
+  const nearby = new Set();
+  let warming = null;
+
+  // Warm only the nearest film's headers/first frame, not every film on the page.
+  function warmNearest() {
+    if (document.hidden || !canPrefetch() || videos.some(video => !video.paused)) return;
+    const nearest = [...nearby].filter(video => !states.get(video).started)
+      .sort((a, b) => Math.abs(a.getBoundingClientRect().top - innerHeight / 2) - Math.abs(b.getBoundingClientRect().top - innerHeight / 2))[0];
+    if (warming && warming !== nearest && !states.get(warming).started) warming.preload = 'none';
+    warming = nearest || null;
+    if (nearest && nearest.preload === 'none') nearest.preload = 'metadata';
+  }
+  const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    entries.forEach(entry => entry.isIntersecting ? nearby.add(entry.target) : nearby.delete(entry.target));
+    warmNearest();
+  }, { rootMargin: '500px 0px' }) : null;
+
+  videos.forEach(video => {
+    const state = { quality: 'hd', started: false, pending: null, generation: 0, fallback: false };
+    states.set(video, state);
+    const toolbar = document.createElement('div');
+    toolbar.className = 'video-quality-tools';
+    toolbar.setAttribute('role', 'group');
+    toolbar.setAttribute('aria-label', `${video.getAttribute('aria-label')} · 视频清晰度`);
+    const buttons = {};
+    for (const [quality, label] of [['hd', '高清'], ['smooth', '流畅']]) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = label;
+      button.setAttribute('aria-pressed', String(quality === state.quality));
+      button.addEventListener('click', () => switchQuality(quality));
+      toolbar.append(button);
+      buttons[quality] = button;
+    }
+    const status = document.createElement('span');
+    status.className = 'video-quality-status';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    toolbar.append(status);
+    video.parentElement.append(toolbar);
+
+    function switchQuality(quality, recovery = false) {
+      if (quality === state.quality && !recovery) return;
+      // A second click during loading keeps the original time and play intent.
+      const snapshot = state.pending || { time: video.currentTime || 0, playing: !video.paused && !video.ended, rate: video.playbackRate, volume: video.volume, muted: video.muted };
+      state.pending = snapshot;
+      state.quality = quality;
+      state.generation++;
+      state.fallback = recovery;
+      for (const key of Object.keys(buttons)) buttons[key].setAttribute('aria-pressed', String(key === quality));
+      const error = video.closest('.film-stage')?.querySelector('.local-video-error');
+      if (error) error.hidden = true;
+      status.textContent = recovery ? '正在尝试高清原片…' : '切换中…';
+      video.preload = 'auto';
+      video.querySelector('source').src = recovery ? video.dataset.originalSrc : quality === 'hd' ? video.dataset.hdSrc : video.dataset.smoothSrc;
+      video.load();
+    }
+
+    video.addEventListener('loadedmetadata', () => {
+      const pending = state.pending;
+      if (!pending) return;
+      const generation = state.generation;
+      video.playbackRate = pending.rate;
+      video.volume = pending.volume;
+      video.muted = pending.muted;
+      const time = Math.min(pending.time, Math.max(0, video.duration - 0.05));
+      const finish = () => {
+        if (generation !== state.generation) return;
+        state.pending = null;
+        status.textContent = '';
+        if (pending.playing && video.isConnected && !document.hidden) video.play().catch(() => {
+          status.textContent = '点击播放继续';
+        });
+      };
+      if (time > 0) {
+        video.addEventListener('seeked', finish, { once: true });
+        video.currentTime = time;
+      } else finish();
+    });
+    video.addEventListener('play', () => {
+      state.started = true;
+      video.preload = 'auto';
+      status.textContent = '';
+      document.querySelectorAll('video').forEach(other => {
+        if (other === video) return;
+        other.pause();
+        const otherState = states.get(other);
+        if (otherState?.pending) otherState.pending.playing = false;
+        if (otherState && !otherState.started) other.preload = 'none';
+      });
+    });
+    video.addEventListener('waiting', () => {
+      if (!video.paused) status.textContent = state.quality === 'hd' ? '缓冲中，可切换流畅版' : '缓冲中…';
+    });
+    video.addEventListener('playing', () => { status.textContent = ''; });
+    video.addEventListener('error', () => {
+      if (!state.fallback) switchQuality('hd', true);
+      else status.textContent = '暂时未能加载，请重新播放';
+    });
+    // Source errors do not always bubble up as a media-element error.
+    video.querySelector('source').addEventListener('error', () => {
+      if (!state.fallback) switchQuality('hd', true);
+      else {
+        status.textContent = '暂时未能加载，请重新播放';
+        const error = video.closest('.film-stage')?.querySelector('.local-video-error');
+        if (error) error.hidden = false;
+      }
+    });
+    // Hover/focus is a stronger indication of intent than simply scrolling past.
+    video.addEventListener('pointerenter', () => {
+      if (canPrefetch() && !videos.some(other => other !== video && !other.paused)) video.preload = 'auto';
+    });
+    video.addEventListener('focus', () => {
+      if (canPrefetch() && !videos.some(other => other !== video && !other.paused)) video.preload = 'auto';
+    });
+    observer?.observe(video);
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) videos.forEach(video => {
+      const state = states.get(video);
+      if (state.pending) state.pending.playing = false;
+      video.pause();
+    });
+    else warmNearest();
+  });
+  // Dialog close must also cancel any in-flight quality switch's resume intent.
+  window.portfolioVideo = { pause(video) {
+    const state = states.get(video);
+    if (state?.pending) state.pending.playing = false;
+    video.pause();
+  } };
 })();

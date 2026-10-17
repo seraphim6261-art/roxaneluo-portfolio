@@ -121,7 +121,7 @@
     savedScroll = scrollY;
     const lenis = window.portfolioScroll;
     if (lenis) { lenis.scrollTo(savedScroll, { immediate: true }); lenis.stop(); }
-    document.querySelectorAll('video').forEach(video => video.pause());
+    document.querySelectorAll('video').forEach(video => { if (window.portfolioVideo) window.portfolioVideo.pause(video); else video.pause(); });
     thumbs.replaceChildren();
     data[id].frames.forEach((frame, index) => {
       const thumb = document.createElement('button');

@@ -1,0 +1,52 @@
+{
+  "canva": {
+    "original": "canva.mp4",
+    "web": "canva-720p.mp4",
+    "originalBytes": 19596834,
+    "webBytes": 5662240,
+    "hd": "canva-1080p.mp4",
+    "hdBytes": 11678294,
+    "originalSha256": "213ea5559bc8588fcae0980e92dd98491cc8b2e518cf04cc614d87b623bc7633",
+    "webSha256": "0b54b30bffa19e97734380f1fe34422fbe6c31276f021840a8ceed4557b054de"
+  },
+  "dongpeng": {
+    "original": "dongpeng.mp4",
+    "web": "dongpeng-720p.mp4",
+    "originalBytes": 24294202,
+    "webBytes": 13948096,
+    "hd": "dongpeng.mp4",
+    "hdBytes": 24294202,
+    "originalSha256": "6edc483fa7d6a069911f7cb0a4922504dc52be1128a55820171fe80281cb10ae",
+    "webSha256": "3eab8597335f319b581b476d7840d464c4f34077d13e81f0c0f511b20c3a862e"
+  },
+  "anton": {
+    "original": "anton.mp4",
+    "web": "anton-720p.mp4",
+    "originalBytes": 2510999,
+    "webBytes": 520935,
+    "hd": "anton-1080p.mp4",
+    "hdBytes": 1655692,
+    "originalSha256": "b935fadb3b9bfdf3ed4f7746ebb1709e22b00022959c3400142735adf5809d89",
+    "webSha256": "2961922a653afb045eb18666edd34ee3616341145cda6bb7f84a5f8e2e33de44"
+  },
+  "young": {
+    "original": "young.mp4",
+    "web": "young-720p.mp4",
+    "originalBytes": 7940800,
+    "webBytes": 6116462,
+    "hd": "young.mp4",
+    "hdBytes": 7940800,
+    "originalSha256": "7e880d1820c4b4186a5109659fdd911a5bd784245c5f93a0ebbe71c1cee11e88",
+    "webSha256": "0a59f6f66c3c8ba35cd2e77e307fbd0f81bafc19286a79266c36feaaedf49da8"
+  },
+  "october": {
+    "original": "october.mp4",
+    "web": "october-720p.mp4",
+    "originalBytes": 20609844,
+    "webBytes": 12700973,
+    "hd": "october.mp4",
+    "hdBytes": 20609844,
+    "originalSha256": "51170c476ffe83535d7781774f14c5c6673bbb0717fce8aaf78b6c8e0e65ccfc",
+    "webSha256": "d03371ab6dbbfe40210a077cf8de9e0132ee7a52ed0081bbb411a584d0cb249e"
+  }
+}
