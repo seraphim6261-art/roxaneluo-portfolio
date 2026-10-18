@@ -1,0 +1,5 @@
+/* Keep below-fold artwork out of the first screen's download queue. */
+html.assets-deferred .resume-card:not(.assets-ready)::before{border-image-source:none}
+html.assets-deferred .palace-artifacts:not(.assets-ready) .palace-doodle{mask-image:none;-webkit-mask-image:none;background:transparent}
+html.assets-deferred:not(.hero-assets-ready) .doodle-border,
+html.assets-deferred:not(.hero-assets-ready) .doodle-creative{background-image:none}

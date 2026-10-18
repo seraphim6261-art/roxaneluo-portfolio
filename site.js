@@ -489,20 +489,6 @@ window.douyinStats = {
 })();
 
 ;
-/* hero-blink.js */
-(() => {
- const art=document.querySelector('.hero-art'),trigger=art?.querySelector('.hero-blink-trigger');if(!trigger)return;
- const original=trigger.querySelector('img'),plane=trigger.querySelector('.hero-eyes-plane'),frame=new Image();
- const editing=()=>document.body.classList.contains('is-image-editing')||document.body.classList.contains('is-text-editing');
- let ready=false,pending=false,resetTimer;
- function fit(){const width=art.clientWidth,height=art.clientHeight,ratio=Math.min(width/1353,height/1162),w=1353*ratio,h=1162*ratio;Object.assign(plane.style,{left:(width-w)/2+'px',top:height-h+'px',width:w+'px',height:h+'px'});}
- function blink(){if(editing())return;if(!ready){pending=true;return;}clearTimeout(resetTimer);trigger.classList.remove('is-blinking');void trigger.offsetWidth;trigger.classList.add('is-blinking');resetTimer=setTimeout(()=>trigger.classList.remove('is-blinking'),matchMedia('(prefers-reduced-motion:reduce)').matches?180:550);}
- frame.src='assets/elephant-closed-eyes.webp';frame.decode().then(()=>{ready=true;trigger.dataset.blinkReady='true';if(pending){pending=false;blink();}}).catch(()=>{trigger.dataset.blinkReady='false';});
- trigger.addEventListener('click',blink);new ResizeObserver(fit).observe(art);original.addEventListener('load',fit);fit();
- document.addEventListener('portfolio:editing',()=>{if(editing()){clearTimeout(resetTimer);pending=false;trigger.classList.remove('is-blinking');}});
-})();
-
-;
 /* hero-layout.js */
 /* Saved illustration composition; no editing UI or browser-local preferences. */
 (() => {
@@ -738,4 +724,36 @@ window.douyinStats = {
     if (state?.pending) state.pending.playing = false;
     video.pause();
   } };
+})();
+
+;
+/* asset-loading.js */
+(() => {
+  'use strict';
+  const root = document.documentElement;
+  const hero = document.querySelector('.hero-art > img');
+  const prepare = element => {
+    if (element.matches('video[data-poster]')) {
+      element.poster = element.dataset.poster;
+      delete element.dataset.poster;
+    } else element.classList.add('assets-ready');
+  };
+  const targets = document.querySelectorAll('.resume-card, .palace-artifacts, video[data-poster]');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        prepare(entry.target);
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '350px 0px' });
+    targets.forEach(element => observer.observe(element));
+  } else targets.forEach(prepare);
+  // Restore the decorative rails after the main portrait has arrived.
+  const finishHero = () => root.classList.add('hero-assets-ready');
+  if (!hero || hero.complete) finishHero();
+  else {
+    hero.addEventListener('load', finishHero, { once: true });
+    hero.addEventListener('error', finishHero, { once: true });
+  }
 })();

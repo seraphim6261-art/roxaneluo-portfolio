@@ -1,0 +1,2 @@
+.hero-image-canvas{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none}
+.hero-art>img{display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}

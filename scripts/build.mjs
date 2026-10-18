@@ -3,8 +3,8 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const styles=['fonts.css','style.css','doodles.css','handwriting.css','paper-surround.css','palettes.css','assets/vendor/lenis.css','portfolio.css','refinements.css','compact.css','palace.css','chalk-directory.css','contact-bubble.css','hero-blink.css','commerce.css','chapters.css','authored-content.css','media-guard.css','reading.css','video-playback.css'];
-const scripts=['app.js','douyin-stats.js','assets/vendor/lenis.min.js','portfolio.js','palace.js','chalk-directory.js','contact-bubble.js','hero-blink.js','hero-layout.js','media-guard.js','video-playback.js'];
+const styles=['fonts.css','style.css','doodles.css','handwriting.css','paper-surround.css','palettes.css','assets/vendor/lenis.css','portfolio.css','refinements.css','compact.css','palace.css','chalk-directory.css','contact-bubble.css','hero-layout.css','commerce.css','chapters.css','authored-content.css','media-guard.css','reading.css','video-playback.css','asset-loading.css'];
+const scripts=['app.js','douyin-stats.js','assets/vendor/lenis.min.js','portfolio.js','palace.js','chalk-directory.js','contact-bubble.js','hero-layout.js','media-guard.js','video-playback.js','asset-loading.js'];
 for(const [name,files,separator] of [['site.css',styles,'\n'],['site.js',scripts,'\n;\n']]){
  const content=files.map(file=>`/* ${file} */\n${fs.readFileSync(path.join(root,file),'utf8')}`).join(separator);
  fs.writeFileSync(path.join(root,name),content);
